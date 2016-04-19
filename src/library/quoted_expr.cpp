@@ -49,9 +49,9 @@ private:
         if (n.is_anonymous())
             return m_ab.mk_app(get_list_nil_name(), m_ab.mk_app(get_sum_name(), mk_constant(get_string_name()), mk_constant(get_num_name()))); // mk_app(mk_constant(get_list_nil_name(), {mk_level_one()}), mk_constant(get_string_name()));
         else if (n.is_numeral())
-            return m_ab.mk_app(get_list_cons_name(), m_ab.mk_app(get_sum_inr_name(), quote_num(n.get_numeral()), quote_name(n.get_prefix())));
+            return m_ab.mk_app(get_list_cons_name(), m_ab.mk_app(get_sum_inr_name(), mk_constant(get_string_name()), mk_constant(get_num_name()), quote_num(n.get_numeral())), quote_name(n.get_prefix()));
         else if (n.is_string())
-            return m_ab.mk_app(get_list_cons_name(), m_ab.mk_app(get_sum_inl_name(), from_string(n.get_string()), quote_name(n.get_prefix())));
+            return m_ab.mk_app(get_list_cons_name(), m_ab.mk_app(get_sum_inl_name(), mk_constant(get_string_name()), mk_constant(get_num_name()), from_string(n.get_string())), quote_name(n.get_prefix()));
             // return mk_app(mk_constant(get_list_cons_name(), {mk_level_one()}),
             //               {mk_constant(get_string_name()), from_string(n.get_string()), quote_name(n.get_prefix())});
         else
