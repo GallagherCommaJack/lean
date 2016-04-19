@@ -77,7 +77,6 @@ tactic reflect_goal_tactic(elaborate_fn const & elab, expr const & denote_fn) {
                             return r;
                         });
                     return proof_state_seq();
-
             }
             return proof_state_seq();
         });

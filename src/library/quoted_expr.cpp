@@ -5,7 +5,6 @@ Authors: Jack Gallagher, Daniel Selsam
 */
 #include <string>
 #include <iostream> // TODO(dhs): remove
-#include "assert.h"
 #include "kernel/kernel_exception.h"
 #include "library/util.h"
 #include "library/constants.h"
@@ -13,7 +12,6 @@ Authors: Jack Gallagher, Daniel Selsam
 #include "library/quoted_expr.h"
 #include "library/string.h"
 #include "library/kernel_serializer.h"
-#include "library/app_builder.h"
 #include "util/sstream.h"
 
 namespace lean {
@@ -29,7 +27,7 @@ private:
     app_builder m_ab;
 
     expr quote_pos_num(uint i) const {
-        assert (i != 0);
+        lean_assert (i != 0);
         if (i == 1)
             return mk_constant(get_pos_num_one_name());
         else if (i % 2 == 0)
@@ -79,7 +77,7 @@ private:
     }
 
     expr quote_levels(levels const & ls) {
-        if(is_nil(ls)) {
+        if (is_nil(ls)) {
             return mk_app(mk_constant(get_list_nil_name(), {mk_level_one()}), mk_constant(get_lean_syntax_level_name()));
         } else {
             return mk_app(mk_constant(get_list_cons_name(), {mk_level_one()}),
