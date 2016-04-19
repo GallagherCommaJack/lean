@@ -1,0 +1,47 @@
+lam
+  (meta [inr 0, inr 18]
+     (sort
+        (param
+           [inl
+             (str (char.mk ff tt tt ff tt tt ff ff)
+                (str (char.mk ff tt ff tt tt tt tt tt) (str (char.mk ff ff tt tt ff ff ff tt) empty)))])))
+  (var 0)
+lam
+  (sort
+     (param
+        [inl
+          (str (char.mk ff tt tt ff tt tt ff ff)
+             (str (char.mk ff tt ff tt tt tt tt tt) (str (char.mk ff ff tt tt ff ff ff tt) empty)))]))
+  (lam (var 0) (var 0))
+lam
+  (const
+     [inl
+       (str (char.mk ff tt tt ff tt tt tt ff)
+          (str (char.mk ff tt tt ff ff ff ff tt) (str (char.mk ff tt tt tt ff tt ff ff) empty)))]
+     nil)
+  (app
+     (const
+        [inl
+          (str (char.mk ff tt tt tt ff ff tt tt)
+             (str (char.mk ff tt tt tt ff tt ff tt)
+                (str (char.mk ff tt tt ff ff ff tt tt) (str (char.mk ff tt tt ff ff ff tt tt) empty)))), inl
+          (str (char.mk ff tt tt ff tt tt tt ff)
+             (str (char.mk ff tt tt ff ff ff ff tt) (str (char.mk ff tt tt tt ff tt ff ff) empty)))]
+        nil)
+     (var 0))
+app
+  (lam
+     (const
+        [inl
+          (str (char.mk ff tt tt ff tt tt tt ff)
+             (str (char.mk ff tt tt ff ff ff ff tt) (str (char.mk ff tt tt tt ff tt ff ff) empty)))]
+        nil)
+     (var 0))
+  (const
+     [inl
+       (str (char.mk ff tt tt tt tt ff tt ff)
+          (str (char.mk ff tt tt ff ff tt ff tt)
+             (str (char.mk ff tt tt tt ff ff tt ff) (str (char.mk ff tt tt ff tt tt tt tt) empty)))), inl
+       (str (char.mk ff tt tt ff tt tt tt ff)
+          (str (char.mk ff tt tt ff ff ff ff tt) (str (char.mk ff tt tt tt ff tt ff ff) empty)))]
+     nil)
