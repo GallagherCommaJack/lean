@@ -36,4 +36,16 @@ namespace option
     | inl e := by left; congruence; assumption
     | inr n := by right; intro h; injection h; contradiction
     end
+
+
+  namespace monad
+    open function
+    definition bind {A B : Type} (f : A → option B) : option A → option B := option.rec none f
+    definition fmap {A B : Type} (f : A → B) : option A → option B := option.rec none (some ∘ f)
+    definition ap {A B : Type} (of : option (A → B)) (a : option A) : option B := bind (λ f, fmap f a) of
+
+    infixl `<#>`:25 := fmap
+    infixr `<*>`:30 := ap
+    infixr `>>=`:10 := λ a f, bind f a
+  end monad
 end option
