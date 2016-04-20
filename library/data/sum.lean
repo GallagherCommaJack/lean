@@ -50,4 +50,6 @@ namespace sum
       | decidable.inl hp := by left; congruence; assumption
       | decidable.inr hn := by right; intro h; injection h; contradiction
     end
+
+  definition decide (P : Prop) [H : decidable P] : P + ¬ P := decidable.rec_on H sum.inl sum.inr
 end sum
