@@ -70,8 +70,4 @@ definition reify_monoid (A : Type.{1}) [A_monoid : monoid.{1} A] : expr →  @mo
 | (quote (@one.{1} A A_monoid)) := monexp.ident
 | (app (app (quote (@monoid.mul.{1} A A_monoid)) e₁) e₂) := monexp.op (reify_monoid e₁) (reify_monoid e₂)
 | a := monexp.ident
-
-print reify_monoid
-
-eval quote reify_monoid
 -- print reify_monoid
