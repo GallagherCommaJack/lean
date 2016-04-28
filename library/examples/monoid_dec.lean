@@ -1,5 +1,7 @@
 import data.reflection
-import data.list
+import data.list data.sum data.prod
+
+open function
 open monoid
 open [notation] list
 section
@@ -9,7 +11,7 @@ section
   | ident : monexp
   | var : A → monexp
   | op : monexp → monexp → monexp
-/-
+
   definition mdenote : monexp → A :=
    monexp.rec 1 (λ a, a) (λ e1 e2 m1 m2, m1 * m2)
   --| mdenote monexp.ident := 1
@@ -48,26 +50,30 @@ section
 
   lemma flat_concat [simp] (l1 l2 : list A) : mconcat (l1 ++ l2) = mconcat l1 * mconcat l2 := by induction l1; all_goals inst_simp
   theorem monexp_mdenote (m : monexp) : mconcat (flatten m) = mdenote m := by induction m; all_goals inst_simp
--/
 end
 
 
 -- monexp.{l_1} : Π {A : Type.{l_1}} [_inst_1 : monoid.{l_1} A], Type.{max 1 l_1}
 
-constants (A : Type.{1}) (A_monoid : monoid A)
+constants (A : Type) (A_monoid : monoid A)
 attribute A_monoid [instance]
 
-open lean.syntax lean.syntax.expr
+open lean lean.syntax lean.syntax.expr lean.syntax.expr.autoquote
 
-set_option pp.all true
-check (one : A)
-check (mul.{1} : A → A → A)
+definition getName : expr → name
+| (const nm _) := nm
+| (meta nm _) := nm
+| (loc nm _) := nm
+| _ := []
 
--- @one.{1} A (@monoid.to_has_one.{1} A A_monoid) : A
--- @monoid.mul.{1} A A_monoid : A → A → A
+definition oneName : name := getName (quote @monoid.one)
+definition mulName : name := getName (quote @monoid.mul)
 
-definition reify_monoid (A : Type.{1}) [A_monoid : monoid.{1} A] : expr →  @monexp.{1} A A_monoid
+definition reify_monoid : expr →  @monexp.{1} A A_monoid
 | (quote (@one.{1} A A_monoid)) := monexp.ident
-| (app (app (quote (@monoid.mul.{1} A A_monoid)) e₁) e₂) := monexp.op (reify_monoid e₁) (reify_monoid e₂)
+| (app (app (app (app op typ) typ_mon) e1) e2) :=
+  if (op = quote @monoid.mul) ∧ (typ = quote A) ∧ (typ_mon = quote A_monoid)
+  then monexp.op (reify_monoid e1) (reify_monoid e2)
+  else monexp.ident
 | a := monexp.ident
--- print reify_monoid
+--print reify_monoid
