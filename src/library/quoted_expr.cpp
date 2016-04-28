@@ -105,9 +105,9 @@ private:
             return mk_app(mk_constant(get_lean_syntax_expr_const_name()),
                           {quote_name(const_name(e)), quote_levels(const_levels(e))});
         case expr_kind::Lambda:
-            return mk_app(mk_constant(get_lean_syntax_expr_lam_name()), {quote_expr(binding_domain(e)), quote_expr(binding_body(e))});
+            return mk_app(mk_constant(get_lean_syntax_expr_lam_name()), {quote_name(binding_name(e)), quote_expr(binding_domain(e)), quote_expr(binding_body(e))});
         case expr_kind::Pi:
-            return mk_app(mk_constant(get_lean_syntax_expr_pi_name()), {quote_expr(binding_domain(e)), quote_expr(binding_body(e))});
+            return mk_app(mk_constant(get_lean_syntax_expr_pi_name()), {quote_name(binding_name(e)), quote_expr(binding_domain(e)), quote_expr(binding_body(e))});
         case expr_kind::App:
             return mk_app(mk_constant(get_lean_syntax_expr_app_name()), {quote_expr(app_fn(e)), quote_expr(app_arg(e))});
         case expr_kind::Let:
