@@ -4,6 +4,7 @@ import data.list data.sum data.prod
 open function
 open monoid
 open [notation] list
+
 section
   parameters {A : Type} [monoid A]
 
@@ -55,8 +56,8 @@ end
 
 -- monexp.{l_1} : Π {A : Type.{l_1}} [_inst_1 : monoid.{l_1} A], Type.{max 1 l_1}
 
-constants (A : Type) (A_monoid : monoid A)
-attribute A_monoid [instance]
+constants (A : Type) [A_monoid : monoid A]
+attribute [instance] A_monoid
 
 open lean lean.syntax lean.syntax.expr lean.syntax.expr.autoquote
 
@@ -69,11 +70,10 @@ definition getName : expr → name
 definition oneName : name := getName (quote @monoid.one)
 definition mulName : name := getName (quote @monoid.mul)
 
-definition reify_monoid : expr →  @monexp.{1} A A_monoid
-| (quote (@one.{1} A A_monoid)) := monexp.ident
-| (app (app (app (app op typ) typ_mon) e1) e2) :=
-  if (op = quote @monoid.mul) ∧ (typ = quote A) ∧ (typ_mon = quote A_monoid)
-  then monexp.op (reify_monoid e1) (reify_monoid e2)
-  else monexp.ident
-| a := monexp.ident
+definition reify_monoid (ty_name : name) (mon_name : name) (env : name → option A) : expr → @monexp A A_monoid
+| (app (app (app (app op typ) inst_mon) e1) e2) :=
+    if (getName op = mulName) ∧ (getName typ = ty_name) ∧ (getName inst_mon = mon_name)
+    then monexp.op (reify_monoid e1) (reify_monoid e2)
+    else monexp.ident
+| e := option.rec_on (env (getName e)) monexp.ident monexp.var
 --print reify_monoid
