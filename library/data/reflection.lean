@@ -8,6 +8,8 @@ definition nary (n : ℕ) (A B : Type) := nat.rec_on n B (λ n' B', A → B')
 
 namespace lean
   abbreviation name := list (string + num)
+  definition name.dec_eq : ∀ (i j : name), decidable (i = j) := _
+  attribute [instance] name.dec_eq
   --axiom [H : decidable_eq name]
   --attribute [instance] H
   namespace syntax
