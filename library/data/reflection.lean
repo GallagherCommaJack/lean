@@ -77,12 +77,12 @@ namespace lean
 
         private definition convert (A : Type) (θ : table A) {n : ℕ} (e : qexp n) : option (nary n A A) :=
           qexp.rec_on e
-            (λ a nm, sum.rec_on (decide ((nm,a) ∈ table.fvars θ))
-                                (λ v, option.some (hlist.get (table.fvmap θ) v))
-                                (λ nv, option.none))
-            (λ t nm, sum.rec_on (decide ((nm,t) ∈ table.vars θ))
-                                (λ v, option.some (hlist.get (table.nmap θ) v))
-                                (λ nv, option.none))
+            (λ a nm, dite ((nm,a) ∈ table.fvars θ)
+                          (λ v, option.some (hlist.get (table.fvmap θ) v))
+                          (λ nv, option.none))
+            (λ t nm, dite ((nm,t) ∈ table.vars θ)
+                          (λ v, option.some (hlist.get (table.nmap θ) v))
+                          (λ nv, option.none))
           (λ n f x f' x', by eapply option.monad.ap; apply f'; apply x') -- why this works and not the other I don't know
           (λ n, option.none)
 
